@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  web:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: phpweb
+    restart: 'always'
+    depends_on:
+      - mariadb
+    volumes:
+      - ./php:/var/www/html/
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+  mariadb:
+    container_name: projectdb
+    image: "mariadb:${MARIADB_VERSION}"
+    restart: 'always'
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}"
+    ports:
+      - 3306:3306
